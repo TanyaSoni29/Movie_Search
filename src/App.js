@@ -58,6 +58,25 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [query, setQuery] = useState("inception");
+  const [selectedId, setSelectedId] = useState(null);
+  const [watched, setWatched] = useState([]);
+
+  function handleSelectMovie(id) {
+    setSelectedId((selectedId) => (selectedId === id ? null : id));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
+
+  function handleAddWatched(movie) {
+    setWatched((watched) => [...watched, movie]);
+  }
+
+  function handleDeleteWatched(id) {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  }
+
   useEffect(() => {
     async function fetchMoviesData() {
       try {
@@ -90,9 +109,17 @@ export default function App() {
         <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </Navbar>
-      <Main tempWatchedData={tempWatchedData}>
+      <Main
+        watched={watched}
+        selectedId={selectedId}
+        onCloseMovie={handleCloseMovie}
+        onAddWatched={handleAddWatched}
+        onDeleteWatched={handleDeleteWatched}
+      >
         {isLoading && <Loader />}
-        {!isLoading && !error && <MovieList movies={movies} />}
+        {!isLoading && !error && (
+          <MovieList movies={movies} handleSelectMovie={handleSelectMovie} />
+        )}
         {error && <Error error={error} />}
       </Main>
       {/* <StarRatings maxLength={10} defaultRating={5} /> */}
