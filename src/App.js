@@ -57,7 +57,7 @@ export default function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("inception");
+  const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [watched, setWatched] = useState([]);
 
@@ -111,6 +111,7 @@ export default function App() {
       setError("");
       return;
     }
+    handleCloseMovie(); // some movie is open and we want whenver we search for second movie then it will close the movieDetails which is open....
     fetchMoviesData();
   }, [query]);
   return (
