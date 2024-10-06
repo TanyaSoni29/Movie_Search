@@ -79,18 +79,28 @@ export default function App() {
 
   useEffect(() => {
     async function fetchMoviesData() {
+      const controller = new AbortController(); // this is browser Api like fetch and it used to defend the race condition
+      // race conditions are those conditions in which multiple api request go after one and another before completion that request if one of api completed before the completion of next request then we have old data in the screen and which leads no data sync properly
       try {
         setIsLoading(true);
         setError("");
-        const res = await fetch(`${process.env.REACT_APP_OMDB_API}&s=${query}`);
+        const res = await fetch(
+          `${process.env.REACT_APP_OMDB_API}&s=${query}`,
+          {
+            signal: controller.signal,
+          }
+        );
         if (!res.ok)
           throw new Error("Failed to fetch, something went wrong...");
         const data = await res.json();
         if (data.Response === "False") throw new Error("Movies not found");
         setMovies(data.Search);
+        setError("");
       } catch (error) {
         console.log(error.message);
-        setError(error.message);
+        if (error.name !== "AbortError") {
+          setError(error.message);
+        }
       } finally {
         setIsLoading(false);
       }
