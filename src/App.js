@@ -84,6 +84,8 @@ export default function App() {
     localStorage.setItem("watched", JSON.stringify(watched));
   }, [watched]);
 
+  // for adding keypress and other event listener we use useRef hook this make the selection of the element easy and we have to write less code for that event listening
+
   useEffect(() => {
     async function fetchMoviesData() {
       const controller = new AbortController(); // this is browser Api like fetch and it used to defend the race condition
