@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 function Search({ query, setQuery }) {
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    searchRef.focus();
+  }, []);
   return (
     <input
+      ref={searchRef}
       className="search"
       type="text"
       placeholder="Search movies..."
