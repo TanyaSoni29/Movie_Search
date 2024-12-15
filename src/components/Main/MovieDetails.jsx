@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import StarRatings from "../StarRatings";
 import Loader from "../Loader";
 
@@ -6,6 +6,8 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
+  const countRef = useRef(0);
+
   const isWatched = watched?.map((movie) => movie.imdbID).includes(selectedId);
   const watchedUserRating = watched.find(
     (movie) => movie.imdbID === selectedId
@@ -22,6 +24,12 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Director: director,
     Genre: genre,
   } = movie;
+
+  // refs are used to persist the data between renders without triggering rerendering...
+  useEffect(() => {
+    if (userRating) countRef.current = countRef.current + 1;
+  }, [userRating]);
+  // the above comment statement is telling us that if we want to store the value across rerendering without losing its previous one then we have to use useRef hook as they are not lost across rerendering while if we use normal variable then after each rerendering it is initialize with default value and lost it's previous stored value so we use UseRef when we want to persist the value between renderings....
   useEffect(() => {
     async function fetchMovieDeatils() {
       setIsLoading(true);
@@ -68,6 +76,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ").at(0)),
       userRating,
+      countRatingDecisions: countRef.current,
     };
     onAddWatched(newWatchedMovie);
     onCloseMovie();
