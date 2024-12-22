@@ -15,6 +15,8 @@ export default function App() {
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
+  // here we can use that custom hook here like this
+  // const {movies, isLoading, error} = useMovies(query, handleCloseMovie) // we are using before declaration of function this could happen only when we are using function statement not arrow function for their declaration this is happening because of the concept of hoisting of function
   const [watched, setWatched] = useState(() => {
     const storedList = localStorage.getItem("watched");
     return JSON.parse(storedList);
