@@ -6,7 +6,7 @@ function MovieList({ movies, handleSelectMovie }) {
     <ul className="list list-movies">
       {movies?.map((movie) => (
         <Movie
-          key={movie.imdbID}
+          key={movie?.imdbID}
           movie={movie}
           handleSelectMovie={handleSelectMovie}
         />

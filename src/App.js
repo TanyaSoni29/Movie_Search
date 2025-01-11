@@ -4,7 +4,7 @@ import Main from "./components/Main";
 import Search from "./components/Navbar/Search";
 import NumResults from "./components/Navbar/NumResults";
 import MovieList from "./components/Main/MovieList";
-import StarRatings from "./components/StarRatings";
+// import StarRatings from "./components/StarRatings";
 import Loader from "./components/Loader";
 import Error from "./components/Error";
 
